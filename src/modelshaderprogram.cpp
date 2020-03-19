@@ -25,10 +25,12 @@ bool ModelShaderProgram::isCoreProfile()
 ModelShaderProgram::ModelShaderProgram()
 {
     if (QSurfaceFormat::defaultFormat().profile() == QSurfaceFormat::CoreProfile) {
-        this->addShaderFromSourceCode(QOpenGLShader::Vertex, loadShaderSource(":/shaders/default.core.vert"));
-        this->addShaderFromSourceCode(QOpenGLShader::Fragment, loadShaderSource(":/shaders/default.core.frag"));
-        m_isCoreProfile = true;
-    } else {
+        if (this->addShaderFromSourceCode(QOpenGLShader::Vertex, loadShaderSource(":/shaders/default.core.vert"))) {
+            this->addShaderFromSourceCode(QOpenGLShader::Fragment, loadShaderSource(":/shaders/default.core.frag"));
+            m_isCoreProfile = true;
+        }
+    }
+    if (!m_isCoreProfile) {
         this->addShaderFromSourceCode(QOpenGLShader::Vertex, loadShaderSource(":/shaders/default.vert"));
         this->addShaderFromSourceCode(QOpenGLShader::Fragment, loadShaderSource(":/shaders/default.frag"));
     }
